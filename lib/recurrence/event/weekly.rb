@@ -16,9 +16,12 @@ class Recurrence_
 
         if next_day = @options[:on].find { |day| day > @date.wday }
           to_add = next_day - @date.wday
+          # sunday is week's last day so add interval
+          to_add += (@options[:interval] - 1) * 7 if @date.wday == 0
         else
           to_add = (7 - @date.wday)                # Move to next week
-          to_add += (@options[:interval] - 1) * 7  # Add extra intervals
+          # Add extra intervals (monday is week first day, so sunday not add interval)
+          to_add += (@options[:interval] - 1) * 7 unless @options[:on].first == 0
           to_add += @options[:on].first            # Go to first required day
         end
 
